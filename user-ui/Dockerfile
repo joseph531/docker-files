@@ -1,13 +1,9 @@
-FROM maven:3.6.3-jdk-11 AS Maven
+FROM node:latest
 WORKDIR /opt/workspace
-RUN git clone --branch develop https://github.com/joseph531/user-service.git 
-RUN cd /opt/workspace/user-service && git pull && mvn clean package
+RUN git clone --branch develop https://github.com/joseph531/user-ui.git
+RUN cd /opt/workspace/user-ui && git pull && npm install
+CMD cd /opt/workspace/user-ui && npm start
 
-FROM openjdk:latest
-WORKDIR /opt/workspace
-COPY --from=Maven /opt/workspace/user-service/target/demo-0.0.1-SNAPSHOT.jar /opt/workspace
-RUN chmod +x /opt/workspace/demo-0.0.1-SNAPSHOT.jar
-RUN ls -ltra
-CMD java -jar /opt/workspace/demo-0.0.1-SNAPSHOT.jar
+
 
 
